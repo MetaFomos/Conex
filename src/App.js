@@ -116,13 +116,8 @@ const Dinosaur = () => {
           camera.position.x = 0.2;
           camera.position.z = -1.8;
           camera.lookAt(target);
-        } else {
-          
-          if(window.pageYOffset>0) {
-  
-            controls.update();
-          }         
-          
+        } else { 
+          controls.update();
         }
 
         renderer.render(scene, camera);
@@ -137,7 +132,7 @@ const Dinosaur = () => {
 
   return (
     <div
-      style={{ height: "100%", width: "100%", position: "fixed" }}
+      style={{ height: "100%", width: "100%", position: "fixed"}}
       ref={refContainer}
     >
       {loading && (
@@ -150,32 +145,33 @@ const Dinosaur = () => {
 };
 
 export default function App() {
-  const [offset, setOffset] = useState(0);
   const [step, setStep] = useState(0);
   var lastScrollTop = 0;
 
-  window.addEventListener('scroll', function(e){
-    lastKnownScrollPosition = window.scrollY;
-
-    var st = window.pageYOffset || document.documentElement.scrollTop; // Credits: "https://github.com/qeremy/so/blob/master/so.dom.js#L426"
-    if (st > lastScrollTop){
-      obj.rotation.y += 0.005;
-    } else {
-      obj.rotation.y -= 0.004;
+  window.addEventListener('scroll', function(){
+    var st = window.pageYOffset || document.documentElement.scrollTop;
+    if (obj && st > lastScrollTop){
+      obj.rotation.y += 0.0005;
+    } else if (obj){
+      obj.rotation.y -= 0.0005;
     }
     lastScrollTop = st <= 0 ? 0 : st;
-    
-    if (lastKnownScrollPosition < 700) {
+    console.log(lastScrollTop, window.innerHeight*4)
+    if (lastScrollTop < window.innerHeight) {
       setStep(0);
-    } else if (lastKnownScrollPosition >= 700 && lastKnownScrollPosition < 1300) {
+    } else if (lastScrollTop >= window.innerHeight && lastScrollTop < window.innerHeight*2) {
       setStep(1);
+    } else if (lastScrollTop >=window.innerHeight*2 && lastScrollTop < window.innerHeight*3) {
+      setStep(2)
+    } else if (lastScrollTop == window.innerHeight*4) {
+      setStep(5)
     } else {
-      setStep(2);
-    }
+      setStep(3);
+    } 
   });
 
   return (
-    <div style={{ width: window.innerWidth, height: window.innerHeight * 3, margin: "0 auto" }}>
+    <div style={{ width: window.innerWidth-20, height: window.innerHeight * 5, margin: "0 auto" }}>
       <Dinosaur />
       {step == 0 ? 
       <div className="fixed z-[100] w-full h-screen">
@@ -186,12 +182,12 @@ export default function App() {
               >&#9776;</p>
           </div>
         </div>
-        <div className="relative w-full h-screen bottom-[120px]">
+        <div className="relative w-full h-screen bottom-[180px]">
           <div className="flex justify-between">
             <div className="font-mono text-white mx-24">
-              <p className="font-[1000]">WE ARE D. STATE</p>
-              <p>Define State is the crossroads of Reality and Artificial Intelligence. AI-powered </p>
-              <p>apps, elastic tokenomics and real world assets provide value to our investors.</p>
+              <p className="font-[1000] text-[24px]">WE ARE D. STATE</p>
+              <p className="font-mono text-[20px]">Define State is the crossroads of Reality and Artificial Intelligence. AI-powered </p>
+              <p className="font-mono text-[20px]">apps, elastic tokenomics and real world assets provide value to our investors.</p>
             </div>
             <div className="text-white text-3xl mx-36 flex items-center">
               <p className="border p-2 mx-1"><FaDiscord /></p>
@@ -200,29 +196,55 @@ export default function App() {
           </div>
         </div>
       </div>
-     : ''}
-     {step == 1 ?
-     <div className="fixed z-[100] w-full h-screen">
-      <div className="flex justify-end relative w-full h-screen items-center text-white">
-        <div className="mx-24"><p className=" font-[1000] text-[40px]">CHATTER</p><br />
-        <p className="font-mono">Chatter is our AI-powered social media </p>
-        <p>aggregator tool. Get all the news, trends, </p>
-        <p>and information you need in one place.</p></div>
+      : ''}
+      {step == 1 ?
+      <div className="fixed z-[100] w-full h-screen">
+        <div className="flex justify-end relative w-full h-screen items-center text-white">
+          <div className="mx-24"><p className="font-mono font-[1000] text-[80px] text-right">CHATTER</p><br />
+          <p className="font-mono  text-[24px]">Chatter is our AI-powered social media </p>
+          <p className="font-mono text-[24px]">aggregator tool. Get all the news, trends, </p>
+          <p className="font-mono text-[24px]">and information you need in one place.</p></div>
+        </div>
       </div>
-     </div>
-     : ''
-     }
-     {step == 2 ?
-     <div className="fixed z-[100] w-full h-screen">
-      <div className="flex justify-start relative w-full h-screen items-center text-white">
-        <div className="mx-24"><p className=" font-[1000] text-[40px]">CHATTER</p><br />
-        <p className="font-mono">Chatter is our AI-powered social media </p>
-        <p>aggregator tool. Get all the news, trends, </p>
-        <p>and information you need in one place.</p></div>
+      : ''
+      }
+      {step == 2 ?
+        <div className="fixed z-[100] w-full h-screen">
+          <div className="flex justify-start relative w-full h-screen items-center text-white">
+            <div className="mx-24">
+              <p className="font-[Ubuntu_Mono] font-[1000] text-[160px]">10,000</p>
+              <p className="font-mono font-[1000] text-[48px] mb-5 tracking-wide">HIGH-QUALITY AVATARS</p>
+              <p className="font-mono tracking-wide text-[24px]">in a refreshing art-style. While most</p>
+              <p className="font-mono tracking-wide text-[24px]">aggregator tool. Get all the news, trends, </p>
+              <p className="font-mono tracking-wide text-[24px]">experimental game theory,  deflationary</p>
+              <p className="font-mono tracking-wide text-[24px]"> mechanisms and real-world utility behind</p>
+              <p className="font-mono tracking-wide text-[24px]"> the art to gamify the collection. Please</p>
+              <p className="font-mono tracking-wide text-[24px]"> see the Campus Map for more information.</p>
+            </div>
+          </div>
+        </div>
+        : ''
+      }
+      {step == 3 ?
+      <div className="fixed z-[100] w-full h-screen">
+        <div className="relative grid grid-cols-2">
+          <div className="col-start-2">
+            <p className="font-mono font-[800] text-[200px] text-white">STUDENTS</p>
+          </div>
+        </div>
       </div>
-     </div>
-     : ''
-     }
+      : ''
+      }
+      {step == 5 ?
+      <div className="fixed bg-black z-[100] w-full h-screen">
+        <div className="relative flex justify-center items-center text-white">
+          <div>
+            <p className="font-mono font-[800] text-[200px]">SOON</p>
+          </div>
+        </div>
       </div>
+      : ''
+      }
+    </div>
   );
 }
