@@ -2,13 +2,15 @@ import { useState, useEffect, useRef } from "react";
 import { OrbitControls } from "three/examples/jsm/controls/OrbitControls";
 import * as THREE from "three";
 import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader";
-import { AxesHelper } from "three";
 import { FaDiscord, FaTwitter } from "react-icons/fa"
+import { ImMap2} from "react-icons/im";
+import { BsSpotify } from "react-icons/bs"
+import "react-loader-spinner/dist/loader/css/react-spinner-loader.css";
 
+import { ThreeCircles } from  'react-loader-spinner'
 
 var obj;
-let lastKnownScrollPosition = 0;
-  let ticking = false;
+
 function loadGLTFModel(scene, glbPath, options) {
   const { receiveShadow, castShadow } = options;
   return new Promise((resolve, reject) => {
@@ -136,24 +138,29 @@ const Dinosaur = () => {
       ref={refContainer}
     >
       {loading && (
-        <span style={{ position: "absolute", left: "50%", top: "50%" }}>
-          Loading...
+        <span style={{ position: "absolute", left: "40%", top: "30%" }}>
+          <ThreeCircles
+            color="#23b8fd"
+            height={300}
+            width={300}
+            ariaLabel="three-circles-rotating"
+          />
         </span>
       )}
     </div>
   );
 };
 
-export default function App() {
+ function App() {
   const [step, setStep] = useState(0);
   var lastScrollTop = 0;
 
   window.addEventListener('scroll', function(){
     var st = window.pageYOffset || document.documentElement.scrollTop;
     if (obj && st > lastScrollTop){
-      obj.rotation.y += 0.0005;
+      obj.rotation.y += 0.001;
     } else if (obj){
-      obj.rotation.y -= 0.0005;
+      obj.rotation.y -= 0.001;
     }
     lastScrollTop = st <= 0 ? 0 : st;
     console.log(lastScrollTop, window.innerHeight*4)
@@ -163,19 +170,21 @@ export default function App() {
       setStep(1);
     } else if (lastScrollTop >=window.innerHeight*2 && lastScrollTop < window.innerHeight*3) {
       setStep(2)
-    } else if (lastScrollTop == window.innerHeight*4) {
-      setStep(5)
-    } else {
+    } else if (lastScrollTop >=window.innerHeight*3 && lastScrollTop < window.innerHeight*4) {
       setStep(3);
+    } else if (lastScrollTop >=window.innerHeight*4 && lastScrollTop < window.innerHeight*5) {
+      setStep(4);
+    } else if (lastScrollTop == window.innerHeight*5) {
+      setStep(5)
     } 
   });
 
   return (
-    <div style={{ width: window.innerWidth-20, height: window.innerHeight * 5, margin: "0 auto" }}>
+    <div style={{ width: window.innerWidth-20, height: window.innerHeight * 6, margin: "0 auto" }}>
       <Dinosaur />
       {step == 0 ? 
       <div className="fixed z-[100] w-full h-screen">
-        <div className="relative w-full h-screen">
+        <div className="relative w-full h-screen mt-10">
           <div className="flex justify-between mt-3 mx-24 items-center">
             <img src="/logo.png" />
             <p className='text-white pointer text-3xl border border-white py-1 px-3'
@@ -227,9 +236,52 @@ export default function App() {
       }
       {step == 3 ?
       <div className="fixed z-[100] w-full h-screen">
-        <div className="relative grid grid-cols-2">
-          <div className="col-start-2">
-            <p className="font-mono font-[800] text-[200px] text-white">STUDENTS</p>
+        <div className="mt-20 relative grid grid-cols-2">
+          <div className="col-start-2 text-white">
+            <p className="font-[Bungee] font-bold text-[70px]">STUDENTS</p>
+            <div className="mt-5 text-[28px] tracking-[.15em]">
+              <p>are separated into 4 class types - </p>
+              <p> Athletes, Hippies, Punks and Devs. Which </p> 
+              <p>one will you be in?</p>
+            </div>
+            <div className="grid grid-cols-3 gap-x-10 font-mono mt-5">
+              <div>
+                <div className="">
+                  <button className="bg-black rounded-md w-full h-full text-white text-[24px] py-10"><p className="font-[Bungee] font-bold text-[80px]">?</p>Atheletes</button>
+                </div>
+                <div className="mt-10">
+                  <button className="bg-black rounded-md w-full h-full text-white text-[24px] py-10"><p className="font-[Bungee] font-bold text-[80px]">?</p>Punks</button>
+                </div>
+              </div>
+              <div>
+                <div className="mt-10">
+                  <button className="bg-black rounded-md w-full h-full text-white text-[24px] py-10"><p className="font-[Bungee] font-bold text-[80px]">?</p>Hippies</button>
+                </div>
+                <div className="mt-10">
+                  <button className="bg-black rounded-md w-full h-full text-white text-[24px] py-10"><p className="font-[Bungee] font-bold text-[80px]">?</p>Devs</button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      : ''
+      }
+      {step == 4 ?
+      <div className="fixed z-[100] w-full h-screen">
+        <div className="relative items-center w-full h-screen grid grid-cols-2 ">
+          <div className="ml-40 col-start-1 text-white ">
+            <p className=" font-[Bungee] font-bold text-[70px]">ALMA MATER</p>
+            <div className="mt-5 text-[28px] tracking-[.15em]">
+              <p>Everything is changing,</p>
+              <p>but why bother waiting?</p>
+              <p>The world is yours for the taking,</p>
+              <p>and you' ll be the one creating.</p>
+              <p>Your choices decide your fate,</p>
+              <p>so be careful which ones you make.</p>
+              <p>Welcome to Define State,</p>
+              <p>I hope you enjoy your stay.</p>
+            </div>
           </div>
         </div>
       </div>
@@ -237,9 +289,23 @@ export default function App() {
       }
       {step == 5 ?
       <div className="fixed bg-black z-[100] w-full h-screen">
-        <div className="relative flex justify-center items-center text-white">
-          <div>
+        <div className="relative w-full h-screen text-white">
+          <div className="mt-40 flex justify-center">
             <p className="font-mono font-[800] text-[200px]">SOON</p>
+          </div>
+        </div>
+        <div className="relative w-full h-screen bottom-[320px]">
+          <div className="flex justify-center text-white text-3xl gap-2">
+            <p className="border p-2"><FaDiscord /></p>
+            <p className="border p-2"><FaTwitter /></p>
+            <p className="border p-2"><BsSpotify /></p>
+            <p className="border p-2"><ImMap2 /></p>
+          </div>
+          <div className="flex justify-center mt-5">
+            <div className="font-mono text-slate-500 mx-24">
+              <p className="font-mono text-[20px]">Define State is a registered trademark. All Rights Reserved. All logos are registered trademarks of their</p>
+              <p className="font-mono text-[20px]"> respective owners. All contents of this document, unless otherwise credited, are copyright ©️ 2022 Define State. </p>
+            </div>
           </div>
         </div>
       </div>
@@ -248,3 +314,5 @@ export default function App() {
     </div>
   );
 }
+
+export default App;
